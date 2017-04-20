@@ -32,10 +32,8 @@
     }
     </style>
   </head>
-  <body>
-    <h1> TV dramas (click on ♥ to tell us what you like!)</h1>
-    <div id="example"></div> 
-    <h1> Tell us what else do you like!</h1>  
+  <body>   
+    <div id="example"></div>     
     <div id="exampleinput"></div>   
   </body>
 </html>
@@ -77,32 +75,45 @@ var TvShowSets = React.createClass({
     });
     return (
       <div className='TvShowSets'>
+       <h1> TV dramas (click on ♥ to tell us what you like!)</h1> 
         {shows}
       </div>
     );
   }
 });
 
-var Input = React.createClass({
-      getInitialState: function() {
-        return {value: ''};
-      },
-      handleChange: function(event) {
-        this.setState({
-          value: event.target.value
-        });
-      },
-      render: function () {
-        var value = this.state.value;
-        return (
-          <div>
-            <input type="text" value={value} onChange={this.handleChange} className='textarea'/>
-            <p>(Sorry what I can do for now is repeat after you) {value}</p>
-          </div>
-        );
-      }
-    });
+//define form
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
 
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert(this.state.value + 'will be added into our DB soon!');
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+      <h1> Tell us what other TV shows you like </h1>
+        <label> Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+//data set
 var data = [
   {
     url: 'https://en.wikipedia.org/wiki/Gossip_Girl',
@@ -118,6 +129,7 @@ var data = [
   }
 ];
 
+//render component/class
 ReactDOM.render(<TvShowSets shows={data} />, document.getElementById('example'));
-ReactDOM.render(<Input/>, document.getElementById('exampleinput'));
+ReactDOM.render(<NameForm/>, document.getElementById('exampleinput'));
 </script>
