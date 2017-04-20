@@ -4,47 +4,120 @@
     <script src="./build/react.js"></script>
     <script src="./build/react-dom.js"></script>
     <script src="./build/browser.min.js"></script>
+    <style>
+      button {
+        background: none;
+        border: 0;
+        color: #46749A;
+        font-size: 2em;
+        margin-left: -4px;
+      }
+      button.active {
+        color: #ff0000;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+      button:focus {
+        outline: none;
+      }
+      textarea>input {
+      display: block;
+      width: 480px;
+      padding: 4px 8px;
+      margin-bottom: 8px;
+      border-radius: 3px;
+      border: 1px solid #888;
+      font-size: 14px;
+    }
+    </style>
   </head>
   <body>
-    <div id="example"></div>
-    
+    <h1> TV dramas (click on ♥ to tell us what you like!)</h1>
+    <div id="example"></div> 
+    <h1> Tell us what else do you like!</h1>  
+    <div id="exampleinput"></div>   
   </body>
 </html>
 
 <script type="text/babel">
-var shows = [
-{key: 1, name: "Gossip Girl", link:"https://en.wikipedia.org/wiki/Gossip_Girl"},
-{key: 2, name: "The Vampire Diaries", link: "https://en.wikipedia.org/wiki/The_Vampire_Diaries"},
-{key: 3, name: "The Big Bang Theory", link: "ttps://en.wikipedia.org/wiki/The_Big_Bang_Theory"},
-]
-
-//ceate a ShowItem class
-var ShowItem = React.createClass({
-  propTypes: {
-    name: React.PropTypes.string.isRequired,
-    link: React.PropTypes.string.isRequired,
+//define TvShow
+var TvShow = React.createClass({
+  getInitialState: function() { //defautl state
+    return {
+      liked: false
+    };
   },
-  render: function(){
-    return(
-      React.createElement('li', {},
-          React.createElement('h2', {}, this.props.name),
-          React.createElement('a', {href: this.props.link}, this.props.link)
-        )
-      )
-    },
-})
+  toggleLiked: function() {
+    this.setState({
+      liked: !this.state.liked
+    });
+  },
+  render: function() {
+    var buttonClass = this.state.liked ? 'active' : '';
+    return (
+      <div className='tvShow'>
+        <h2>{ this.props.caption }</h2>
+        <div className='bar'>
+          <button onClick={this.toggleLiked} className={buttonClass}>
+            ♥
+          </button>
+          <span>{this.props.url}</span>
+        </div>
+      </div>
+    );
+  }
+});
 
-//create list of elements
-var ShowItemElements = shows
-  .map(function(show) { return React.createElement(ShowItem, show)
-})
+//define TVShowSet
+var TvShowSets = React.createClass({
+  render: function() {
+    var shows = this.props.shows.map(function(show) {
+      return <TvShow key = {show.url} url={show.url} caption={show.caption} />
+    });
+    return (
+      <div className='TvShowSets'>
+        {shows}
+      </div>
+    );
+  }
+});
 
-//create root element
-var rootElement = 
-  React.createElement('div', {}, 
-    React.createElement('h1', {}, "TV Dramas"),
-    React.createElement('ul', {}, ShowItemElements)
-  )
+var Input = React.createClass({
+      getInitialState: function() {
+        return {value: ''};
+      },
+      handleChange: function(event) {
+        this.setState({
+          value: event.target.value
+        });
+      },
+      render: function () {
+        var value = this.state.value;
+        return (
+          <div>
+            <input type="text" value={value} onChange={this.handleChange} className='textarea'/>
+            <p>(Sorry what I can do for now is repeat after you) {value}</p>
+          </div>
+        );
+      }
+    });
 
-ReactDOM.render(rootElement, document.getElementById('example'))
+var data = [
+  {
+    url: 'https://en.wikipedia.org/wiki/Gossip_Girl',
+    caption: 'Gossip Girl'
+  },
+  {
+    url: 'https://en.wikipedia.org/wiki/The_Vampire_Diaries',
+    caption: 'The Vampire Diaries'
+  },
+  {
+    url: 'ttps://en.wikipedia.org/wiki/The_Big_Bang_Theory',
+    caption: 'The Big Bang Theory'
+  }
+];
+
+ReactDOM.render(<TvShowSets shows={data} />, document.getElementById('example'));
+ReactDOM.render(<Input/>, document.getElementById('exampleinput'));
 </script>

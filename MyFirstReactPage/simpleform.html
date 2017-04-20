@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <style>
+      button {
+        background: none;
+        border: 0;
+        color: #BDBDBD;
+        font-size: 2em;
+        margin-left: -4px;
+      }
+      button.active {
+        color: #46749A;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+      button:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="example"></div>   
+  </body>
+</html>
+
+<script type="text/babel">
+//define TvShow
+var TvShow = React.createClass({
+  toggleLiked: function() {
+    this.setState({
+      liked: !this.state.liked
+    });
+  },
+
+  getInitialState: function() { //defautl state
+    return {
+      liked: false
+    };
+  },
+
+  render: function() {
+    var buttonClass = this.state.liked ? 'active' : '';
+    return (
+      <div className='tvShow'>
+        <h1>{ this.props.src }</h1>
+
+        <div className='bar'>
+          <button onClick={this.toggleLiked} className={buttonClass}>
+            ♥
+          </button>
+          <span>{this.props.caption}</span>
+        </div>
+      </div>
+    );
+  }
+});
+
+//define TVShowSet
+var TvShowSets = React.createClass({
+  render: function() {
+    var shows = this.props.shows.map(function(show) {
+      return <TvShow key = {show.url} src={show.url} caption={show.caption} />
+    });
+    return (
+      <div className='TvShowSets'>
+        {shows}
+      </div>
+    );
+  }
+});
+
+var data = [
+  {
+    url: 'test',
+    caption: 'Hong Kong!'
+  },
+  {
+    url: 'test1',
+    caption: 'Cows'
+  },
+  {
+    url: 'test2',
+    caption: 'Scooters'
+  }
+];
+
+ReactDOM.render(<TvShowSets shows={data} />, document.getElementById('example'));
+</script>
