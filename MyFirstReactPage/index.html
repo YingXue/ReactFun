@@ -12,24 +12,39 @@
 </html>
 
 <script type="text/babel">
+var shows = [
+{key: 1, name: "Gossip Girl", link:"https://en.wikipedia.org/wiki/Gossip_Girl"},
+{key: 2, name: "The Vampire Diaries", link: "https://en.wikipedia.org/wiki/The_Vampire_Diaries"},
+{key: 3, name: "The Big Bang Theory", link: "ttps://en.wikipedia.org/wiki/The_Big_Bang_Theory"},
+]
+
+//ceate a ShowItem class
+var ShowItem = React.createClass({
+  propTypes: {
+    name: React.PropTypes.string.isRequired,
+    link: React.PropTypes.string.isRequired,
+  },
+  render: function(){
+    return(
+      React.createElement('li', {},
+          React.createElement('h2', {}, this.props.name),
+          React.createElement('a', {href: this.props.link}, this.props.link)
+        )
+      )
+    },
+})
+
+//create list of elements
+var ShowItemElements = shows
+  .map(function(show) { return React.createElement(ShowItem, show)
+})
+
+//create root element
 var rootElement = 
-React.createElement('div', {}, 
-  React.createElement('h1', {}, "TV Dramas"),
-  React.createElement('ul', {},
-    React.createElement('li', {},
-      React.createElement('h2', {}, "Gossip Girl"),
-      React.createElement('a', {href: 'https://en.wikipedia.org/wiki/Gossip_Girl'}, 'https://en.wikipedia.org/wiki/Gossip_Girl')
-    ),
-    React.createElement('li', {},
-      React.createElement('h2', {}, "The Vampire Diaries"),
-      React.createElement('a', {href: 'https://en.wikipedia.org/wiki/The_Vampire_Diaries'}, 'https://en.wikipedia.org/wiki/The_Vampire_Diaries')
-    ),
-    React.createElement('li', {},
-      React.createElement('h2', {}, "The Big Bang Theory"),
-      React.createElement('a', {href: 'https://en.wikipedia.org/wiki/The_Big_Bang_Theory'}, 'https://en.wikipedia.org/wiki/The_Big_Bang_Theory')
-    )
+  React.createElement('div', {}, 
+    React.createElement('h1', {}, "TV Dramas"),
+    React.createElement('ul', {}, ShowItemElements)
   )
-)
 
 ReactDOM.render(rootElement, document.getElementById('example'))
 </script>
