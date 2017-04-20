@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    
+  </body>
+</html>
+
+<script type="text/babel">
+var rootElement = 
+React.createElement('div', {}, 
+  React.createElement('h1', {}, "TV Dramas"),
+  React.createElement('ul', {},
+    React.createElement('li', {},
+      React.createElement('h2', {}, "Gossip Girl"),
+      React.createElement('a', {href: 'https://en.wikipedia.org/wiki/Gossip_Girl'}, 'https://en.wikipedia.org/wiki/Gossip_Girl')
+    ),
+    React.createElement('li', {},
+      React.createElement('h2', {}, "The Vampire Diaries"),
+      React.createElement('a', {href: 'https://en.wikipedia.org/wiki/The_Vampire_Diaries'}, 'https://en.wikipedia.org/wiki/The_Vampire_Diaries')
+    ),
+    React.createElement('li', {},
+      React.createElement('h2', {}, "The Big Bang Theory"),
+      React.createElement('a', {href: 'https://en.wikipedia.org/wiki/The_Big_Bang_Theory'}, 'https://en.wikipedia.org/wiki/The_Big_Bang_Theory')
+    )
+  )
+)
+
+ReactDOM.render(rootElement, document.getElementById('example'))
+</script>
