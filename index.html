@@ -55,12 +55,12 @@ var TvShow = React.createClass({
     var buttonClass = this.state.liked ? 'active' : '';
     return (
       <div className='tvShow'>
-        <h2>{ this.props.caption }</h2>
+        <h2>{ this.props.title }</h2>
         <div className='bar'>
           <button onClick={this.toggleLiked} className={buttonClass}>
             ♥
           </button>
-          <span>{this.props.url}</span>
+          <a href = {this.props.url} target = "_blank">Wiki Link</a>
         </div>
       </div>
     );
@@ -70,9 +70,11 @@ var TvShow = React.createClass({
 //define TVShowSet
 var TvShowSets = React.createClass({
   render: function() {
-    var shows = this.props.shows.map(function(show) {
-      return <TvShow key = {show.url} url={show.url} caption={show.caption} />
+    var shows = this.props.shows.map( // for each show in show set
+      function(show) {
+      return <TvShow key = {show.url} url={show.url} title={show.title} />
     });
+
     return (
       <div className='TvShowSets'>
        <h1> TV dramas (click on ♥ to tell us what you like!)</h1> 
@@ -86,18 +88,23 @@ var TvShowSets = React.createClass({
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {value: '', link: ''};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    const name = event.target.name;
+    this.setState({
+      [name]: event.target.value});
+    console.log(name);
+    console.log(event.target.value);
   }
 
+
   handleSubmit(event) {
-    alert(this.state.value + 'will be added into our DB soon!');
+    alert(this.state.value + 'link:' + this.state.link + 'will be added into our DB soon!');
     event.preventDefault();
   }
 
@@ -106,7 +113,10 @@ class NameForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
       <h1> Tell us what other TV shows you like </h1>
         <label> Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          <input name = "value" type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <label> Wiki Link:
+          <input name = "link" type="text" value={this.state.link} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>
@@ -117,15 +127,15 @@ class NameForm extends React.Component {
 var data = [
   {
     url: 'https://en.wikipedia.org/wiki/Gossip_Girl',
-    caption: 'Gossip Girl'
+    title: 'Gossip Girl'
   },
   {
     url: 'https://en.wikipedia.org/wiki/The_Vampire_Diaries',
-    caption: 'The Vampire Diaries'
+    title: 'The Vampire Diaries'
   },
   {
     url: 'ttps://en.wikipedia.org/wiki/The_Big_Bang_Theory',
-    caption: 'The Big Bang Theory'
+    title: 'The Big Bang Theory'
   }
 ];
 
